@@ -48,7 +48,7 @@ const routes = (handler) => [
     path: '/albums/{id}/likes',
     handler: handler.postAlbumLikeHandler,
     options: {
-      auth: 'music_jwt',
+      auth: 'playlistapp_jwt',
     },
   },
   {
