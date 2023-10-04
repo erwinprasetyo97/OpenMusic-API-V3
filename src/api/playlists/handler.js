@@ -98,6 +98,7 @@ class PlaylistsHandler {
 
     return {
       status: 'success',
+      message: 'Lagu dari Playlist berhasil diambil',
       data: {
         playlist,
       },

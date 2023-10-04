@@ -53,9 +53,9 @@ const init = async () => {
   const cacheService = new CacheService();
   const collaborationsService = new CollaborationsService();
   const albumsService = new AlbumsService(cacheService);
-  const usersService = new UsersService();
-  const authenticationsService = new AuthenticationsService();
   const playlistsService = new PlaylistsService(collaborationsService);
+  const authenticationsService = new AuthenticationsService();
+  const usersService = new UsersService();
   const storageService = new StorageService(path.resolve(__dirname, 'api/albums/file/covers'));
 
   const server = Hapi.server({
@@ -69,13 +69,12 @@ const init = async () => {
   });
 
   // registrasi plugin eksternal
-  await server.register([
-    {
-      plugin: Jwt,
-    },
-    {
-      plugin: Inert,
-    },
+  await server.register([{
+    plugin: Jwt,
+  },
+  {
+    plugin: Inert,
+  },
   ]);
 
   //  mendefinisikan strategy autentikasi jwt
@@ -95,66 +94,68 @@ const init = async () => {
     }),
   });
 
-  await server.register([
-    {
-      plugin: songs,
-      options: {
-        service: new SongsService(),
-        validator: SongsValidator,
-        storageService,
-      },
+  await server.register([{
+    plugin: songs,
+    options: {
+      service: new SongsService(),
+      validator: SongsValidator,
+      storageService,
     },
-    {
-      plugin: albums,
-      options: {
-        service: albumsService,
-        validator: AlbumsValidator,
-      },
+  },
+  {
+    plugin: albums,
+    options: {
+      service: albumsService,
+      validator: AlbumsValidator,
     },
-    {
-      plugin: users,
-      options: {
-        service: usersService,
-        validator: UsersValidator,
-      },
+  },
+  {
+    plugin: users,
+    options: {
+      service: usersService,
+      validator: UsersValidator,
     },
-    {
-      plugin: authentications,
-      options: {
-        authenticationsService,
-        usersService,
-        tokenManager: TokenManager,
-        validator: AuthenticationsValidator,
-      },
+  },
+  {
+    plugin: authentications,
+    options: {
+      authenticationsService,
+      usersService,
+      tokenManager: TokenManager,
+      validator: AuthenticationsValidator,
     },
-    {
-      plugin: collaborations,
-      options: {
-        collaborationsService,
-        playlistsService,
-        validator: CollaborationsValidator,
-      },
+  },
+  {
+    plugin: collaborations,
+    options: {
+      collaborationsService,
+      playlistsService,
+      validator: CollaborationsValidator,
     },
-    {
-      plugin: playlists,
-      options: {
-        playlistsService,
-        usersService,
-        validator: PlaylistsValidator,
-      },
+  },
+  {
+    plugin: playlists,
+    options: {
+      playlistsService,
+      usersService,
+      validator: PlaylistsValidator,
     },
-    {
-      plugin: _exports,
-      options: {
-        service: ProducerService,
-        validator: ExportsValidator,
-      },
+  },
+  {
+    plugin: _exports,
+    options: {
+      service: ProducerService,
+      validator: ExportsValidator,
+      playlistsService,
     },
+  },
   ]);
 
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks dari request
-    const { response } = request;
+    const {
+      response,
+    } = request;
 
     if (response instanceof Error) {
       // penanganan client error secara internal.

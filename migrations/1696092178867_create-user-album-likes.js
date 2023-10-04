@@ -3,7 +3,7 @@
 exports.up = (pgm) => {
   pgm.createTable('user_album_likes', {
     id: {
-      type: 'VARCHAR(20)',
+      type: 'VARCHAR(50)',
       primaryKey: true,
     },
     user_id: {
