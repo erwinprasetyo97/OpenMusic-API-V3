@@ -52,6 +52,7 @@ class PlaylistsHandler {
 
     return {
       status: 'success',
+      message: 'Playlist berdasarkan Id berhasil diambil',
       data: {
         playlist,
       },
@@ -129,6 +130,7 @@ class PlaylistsHandler {
 
     const response = h.response({
       status: 'success',
+      message: 'Aktivitas Playlisst berhasil diambil',
       data: activities,
     });
 
