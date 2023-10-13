@@ -1,5 +1,3 @@
-const path = require('path');
-
 const routes = (handler) => [
   {
     method: 'POST',
@@ -23,38 +21,24 @@ const routes = (handler) => [
   },
   {
     method: 'POST',
-    path: '/albums/{id}/covers',
-    handler: handler.postUploadCoverHandler,
-    options: {
-      payload: {
-        allow: 'multipart/form-data',
-        multipart: true,
-        output: 'stream',
-        maxBytes: 512000,
-      },
-    },
-  },
-  {
-    method: 'GET',
-    path: '/albums/file/{param*}',
-    handler: {
-      directory: {
-        path: path.resolve(__dirname, 'file'),
-      },
-    },
-  },
-  {
-    method: 'POST',
     path: '/albums/{id}/likes',
-    handler: handler.postAlbumLikeHandler,
+    handler: handler.postAlbumLikesHandler,
     options: {
-      auth: 'playlistapp_jwt',
+      auth: 'openmusic_jwt',
     },
   },
   {
     method: 'GET',
     path: '/albums/{id}/likes',
     handler: handler.getAlbumLikesHandler,
+  },
+  {
+    method: 'DELETE',
+    path: '/albums/{id}/likes',
+    handler: handler.deleteAlbumLikesHandler,
+    options: {
+      auth: 'openmusic_jwt',
+    },
   },
 ];
 

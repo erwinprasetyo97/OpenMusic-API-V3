@@ -1,7 +1,6 @@
-const { Pool } = require('pg');
 const { nanoid } = require('nanoid');
+const { Pool } = require('pg');
 const InvariantError = require('../../exceptions/InvariantError');
-const NotFoundError = require('../../exceptions/NotFoundError');
 
 class CollaborationsService {
   constructor() {
@@ -9,24 +8,14 @@ class CollaborationsService {
   }
 
   async addCollaboration(playlistId, userId) {
-    const queryUser = {
-      text: 'SELECT * FROM users WHERE id = $1',
-      values: [userId],
-    };
-
-    const resultUser = await this._pool.query(queryUser);
-
-    if (!resultUser.rows.length) {
-      throw new NotFoundError('User tidak ditemukan');
-    }
-
     const id = `collab-${nanoid(16)}`;
     const query = {
       text: 'INSERT INTO collaborations VALUES($1, $2, $3) RETURNING id',
       values: [id, playlistId, userId],
     };
+
     const result = await this._pool.query(query);
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new InvariantError('Kolaborasi gagal ditambahkan');
     }
     return result.rows[0].id;
@@ -39,8 +28,7 @@ class CollaborationsService {
     };
 
     const result = await this._pool.query(query);
-
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new InvariantError('Kolaborasi gagal dihapus');
     }
   }
@@ -52,9 +40,8 @@ class CollaborationsService {
     };
 
     const result = await this._pool.query(query);
-
-    if (!result.rows.length) {
-      throw new InvariantError('Kolaborasi gagal diverifikasi');
+    if (!result.rowCount) {
+      throw new InvariantError('Kolaborator tidak dikenal');
     }
   }
 }

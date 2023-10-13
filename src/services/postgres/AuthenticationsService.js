@@ -23,15 +23,14 @@ class AuthenticationsService {
 
     const result = await this._pool.query(query);
 
-    if (!result.rows.length) {
-      throw new InvariantError('Refresh Token tidak valid');
+    if (!result.rowCount) {
+      throw new InvariantError('Refresh token tidak valid');
     }
   }
 
   async deleteRefreshToken(token) {
-    await this.verifyRefreshToken(token);
     const query = {
-      text: 'DELETE from authentications WHERE token = $1',
+      text: 'DELETE FROM authentications WHERE token = $1',
       values: [token],
     };
 
