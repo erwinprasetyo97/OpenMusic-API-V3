@@ -3,7 +3,7 @@ class Listener {
     this._playlistsService = playlistsService;
     this._mailSender = mailSender;
 
-    this.listen = this.listen.bind();
+    this.listen = this.listen.bind(this);
   }
 
   async listen(message) {
