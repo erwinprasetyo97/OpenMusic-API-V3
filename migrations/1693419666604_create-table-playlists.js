@@ -7,11 +7,11 @@ exports.up = (pgm) => {
       primaryKey: true,
     },
     name: {
-      type: 'TEXT',
+      type: 'VARCHAR(50)',
       notNull: true,
     },
     owner: {
-      type: 'VARCHAR(100)',
+      type: 'VARCHAR(50)',
       notNull: true,
     },
   });

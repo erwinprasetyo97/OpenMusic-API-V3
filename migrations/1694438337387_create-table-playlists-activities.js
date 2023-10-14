@@ -19,7 +19,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     action: {
-      type: 'VARCHAR(10)',
+      type: 'VARCHAR(50)',
       notNull: true,
     },
     time: {
@@ -29,7 +29,7 @@ exports.up = (pgm) => {
   });
 
   // buat foreign key playlist activity
-  pgm.addConstraint('playlist_activities', 'fk_playlist_activities.playlist_id_playlist.id', 'FOREIGN KEY(playlist_id) REFERENCES playlists(id) ON DELETE CASCADE');
+  pgm.addConstraint('playlist_activities', 'fk_playlist_activities.playlist_id_playlists.id', 'FOREIGN KEY(playlist_id) REFERENCES playlists(id) ON DELETE CASCADE');
 };
 
 exports.down = (pgm) => {
