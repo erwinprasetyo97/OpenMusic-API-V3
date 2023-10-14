@@ -24,28 +24,38 @@ class SongsService {
     return result.rows[0].id;
   }
 
-  async getSongs(title, performer) {
-    if (title && performer) {
-      const query = {
-        text: "SELECT id, title, performer FROM songs WHERE LOWER(title) LIKE '%' || LOWER($1) || '%' AND LOWER(performer) LIKE '%' || LOWER($2) || '%'",
-        values: [`%${title}`, `%${performer}`],
-      };
-      const result = await this._pool.query(query);
-      return result.rows;
-    }
+  // optional lain sebelum direvisi
+  // async getSongs(title, performer) {
+  //   if (title && performer) {
+  //     const query = {
+  //       text: "SELECT id, title, performer FROM songs WHERE LOWER(title) LIKE '%' || LOWER($1) || '%' AND LOWER(performer) LIKE '%' || LOWER($2) || '%'",
+  //       values: [`%${title}`, `%${performer}`],
+  //     };
+  //     const result = await this._pool.query(query);
+  //     return result.rows;
+  //   }
 
-    if (title || performer) {
-      const query = {
-        text: "SELECT id, title, performer FROM songs WHERE LOWER(title) LIKE '%' || LOWER($1) || '%' OR LOWER(performer) LIKE '%' || LOWER($2) || '%'",
-        values: [`%${title}`, `%${performer}`],
-      };
-      const result = await this._pool.query(query);
-      return result.rows;
-    }
+  //   if (title || performer) {
+  //     const query = {
+  //       text: "SELECT id, title, performer FROM songs WHERE LOWER(title) LIKE '%' || LOWER($1) || '%' OR LOWER(performer) LIKE '%' || LOWER($2) || '%'",
+  //       values: [`%${title}`, `%${performer}`],
+  //     };
+  //     const result = await this._pool.query(query);
+  //     return result.rows;
+  //   }
 
-    const query = 'SELECT id, title, performer FROM songs';
-    const result = await this._pool.query(query);
-    return result.rows;
+  //   const query = 'SELECT id, title, performer FROM songs';
+  //   const result = await this._pool.query(query);
+  //   return result.rows;
+  // }
+
+  async getSongs(title = '', performer = '') {
+    const query = {
+      text: 'SELECT id, title, performer FROM songs WHERE title ILIKE $1 AND performer ILIKE $2',
+      values: [`%${title}%`, `%${performer}%`],
+    };
+    const { rows } = await this._pool.query(query);
+    return rows;
   }
 
   async getSongById(id) {
