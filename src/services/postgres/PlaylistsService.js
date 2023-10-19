@@ -187,7 +187,7 @@ class PlaylistsService {
     const activityLog = result.rows.map((row) => ({
       username: row.username,
       title: row.title,
-      action: row.activity,
+      action: row.action,
       time: row.time,
     }));
 
